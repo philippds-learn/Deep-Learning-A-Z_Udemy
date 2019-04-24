@@ -110,6 +110,9 @@ cm = confusion_matrix(y_test, y_pred)
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 
+from keras.models import Sequential
+from keras.layers import Dense
+
 def build_classifier():
     classifier = Sequential()
     classifier.add(Dense(units = 6, activation = 'relu', kernel_initializer = 'uniform', input_dim = 11))
@@ -119,3 +122,5 @@ def build_classifier():
     return classifier
 
 classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
+
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = -1)
