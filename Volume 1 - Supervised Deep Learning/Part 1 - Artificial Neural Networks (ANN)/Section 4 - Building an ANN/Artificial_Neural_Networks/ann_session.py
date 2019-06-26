@@ -113,6 +113,9 @@ from sklearn.model_selection import cross_val_score
 from keras.models import Sequential
 from keras.layers import Dense
 
+from keras.models import Sequential
+from keras.layers import Dense
+
 def build_classifier():
     classifier = Sequential()
     classifier.add(Dense(units = 6, activation = 'relu', kernel_initializer = 'uniform', input_dim = 11))
@@ -122,6 +125,11 @@ def build_classifier():
     return classifier
 
 classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
+<<<<<<< HEAD
 accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = 1)
 mean = accuracies.mean()
 variance = accuracies.std()
+=======
+
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = -1)
+>>>>>>> 4d169691c340ecaa41293cf5d848849718772a99
