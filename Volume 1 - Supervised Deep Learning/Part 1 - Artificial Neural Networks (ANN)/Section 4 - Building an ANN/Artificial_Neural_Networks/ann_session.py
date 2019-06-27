@@ -139,11 +139,14 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.layers import Dropout
 
 def build_classifier(optimizer):
     classifier = Sequential()
     classifier.add(Dense(units = 6, activation = 'relu', kernel_initializer = 'uniform', input_dim = 11))
+    classifier.add(Dropout(rate = 0.1))
     classifier.add(Dense(units = 6, activation = 'relu', kernel_initializer = 'uniform'))
+    classifier.add(Dropout(rate = 0.1))
     classifier.add(Dense(units = 1, activation = 'sigmoid', kernel_initializer = 'uniform'))
     classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
@@ -151,8 +154,8 @@ def build_classifier(optimizer):
 classifier = KerasClassifier(build_fn = build_classifier)
 
 # testing hyper parameters
-parameters = {'batch_size':[25, 32], 
-              'nb_epoch': [100, 500],
+parameters = {'batch_size':[4, 16, 32, 64], 
+              'nb_epoch': [100, 500, 1000],
               'optimizer': ['adam', 'rmsprop']}
 
 grid_search = GridSearchCV(estimator = classifier,
