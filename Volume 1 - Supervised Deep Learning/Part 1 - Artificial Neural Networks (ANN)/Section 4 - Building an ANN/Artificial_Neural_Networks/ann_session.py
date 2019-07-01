@@ -124,7 +124,7 @@ def build_classifier():
     classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
 
-classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
+classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, epochs = 100)
 
 accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = 1)
 mean = accuracies.mean()
@@ -143,26 +143,23 @@ from keras.layers import Dropout
 
 def build_classifier(optimizer):
     classifier = Sequential()
-    classifier.add(Dense(units = 6, activation = 'relu', kernel_initializer = 'uniform', input_dim = 11))
-    classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 6, activation = 'relu', kernel_initializer = 'uniform'))
-    classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 1, activation = 'sigmoid', kernel_initializer = 'uniform'))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    
     classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
 
 classifier = KerasClassifier(build_fn = build_classifier)
 
 # testing hyper parameters
-parameters = {'batch_size':[4, 16, 32, 64], 
-              'nb_epoch': [100, 500, 1000],
+parameters = {'batch_size':[16, 32, 64],
+              'epochs': [100, 500, 1000],
               'optimizer': ['adam', 'rmsprop']}
-
 grid_search = GridSearchCV(estimator = classifier,
                            param_grid = parameters,
                            scoring = 'accuracy',
                            cv = 10)
-
 grid_search = grid_search.fit(X_train, y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
