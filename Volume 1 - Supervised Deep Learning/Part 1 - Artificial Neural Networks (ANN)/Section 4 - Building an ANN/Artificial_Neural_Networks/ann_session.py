@@ -145,6 +145,7 @@ def build_classifier(optimizer):
     classifier = Sequential()
     classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
     classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
     classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
     
     classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
@@ -153,8 +154,8 @@ def build_classifier(optimizer):
 classifier = KerasClassifier(build_fn = build_classifier)
 
 # testing hyper parameters
-parameters = {'batch_size':[16, 32, 64],
-              'epochs': [100, 500, 1000],
+parameters = {'batch_size':[16], # , 32, 64
+              'epochs': [100], #, 500, 1000
               'optimizer': ['adam', 'rmsprop']}
 grid_search = GridSearchCV(estimator = classifier,
                            param_grid = parameters,
@@ -163,3 +164,10 @@ grid_search = GridSearchCV(estimator = classifier,
 grid_search = grid_search.fit(X_train, y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
+
+# batch_size: 16, epochs: 1000, optimizer: rmsprop units: 6 => accuracy 0.853875
+# batch_size: 16, epochs: 100, optimizer: adam units: 12 => accuracy 0.839125
+# batch_size: 16, epochs: 100, optimizer: adam units: 6 => accuracy 0.8465
+
+
+
