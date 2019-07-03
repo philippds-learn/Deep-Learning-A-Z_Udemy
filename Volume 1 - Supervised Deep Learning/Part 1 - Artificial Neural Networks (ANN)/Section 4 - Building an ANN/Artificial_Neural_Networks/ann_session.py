@@ -165,9 +165,12 @@ grid_search = grid_search.fit(X_train, y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
 
+# view all results of grid_search
+all_results = grid_search.cv_results_
+
 # batch_size: 16, epochs: 1000, optimizer: rmsprop units: 6 => accuracy 0.853875
 # batch_size: 16, epochs: 100, optimizer: adam units: 12 => accuracy 0.839125
 # batch_size: 16, epochs: 100, optimizer: adam units: 6 => accuracy 0.8465
-
+# batch_size: 16, epochs: 100, optimizer: adam units: 6 units: 6 => 0.836375
 
 
